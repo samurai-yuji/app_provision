@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<title>test2</title>
+		<script type="text/javascript" src="{{ static_url('jquery-3.2.1.min.js') }}"></script>
+		<script type="text/javascript">
+			var g_state = {
+				tokyo: false,
+				osaka: false,
+			};
+			function set_tokyo(e){
+				e.preventDefault();
+				g_state.tokyo = true; 
+			}
+			function set_osaka(e){
+				e.preventDefault();
+				g_state.osaka = true; 
+			}
+			function submit(){
+				var text = "";
+				for(key in g_state){
+					text += key + " : " + String(g_state[key]) +"\n"
+				}
+				alert(text);
+				// Use JQuery XMLHttpRequest
+				$.post("/post", {"json" : JSON.stringify(g_state)})
+					.done(function(data){
+						result = JSON.parse(data);
+						for(key in result){
+							alert(key + ":" + result[key]);
+						}
+					})
+					.fail(function(){
+					})
+			}
+		</script>
+	</head>
+	<body>
+		<img src="{{ static_url('japan-map.jpg') }}" width=750 height=750>
+		<a href="#"><img title="tokyo" style="position:absolute; top:510; left:410" src="{{ static_url('juniper-router.jpg') }}" width=120 height=50 onclick="set_tokyo(event);"></a>
+		<a href="#"><img title="osaka" style="position:absolute; top:550; left:250" src="{{ static_url('juniper-router.jpg') }}" width=120 height=50 onclick="set_osaka(event);"></a>
+		<br>
+		<button onclick="submit();">provision</button>
+	</body>
+</htML>
+
